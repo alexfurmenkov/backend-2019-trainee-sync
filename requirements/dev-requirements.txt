@@ -9,6 +9,4 @@ mypy
 pytest
 pytest-asyncio
 pytest-coverage
-pyjwt
-psycopg2
-django-mailgun
+
