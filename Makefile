@@ -8,7 +8,7 @@ down:
 lint:
 	pip install -r requirements/dev-requirements.txt
 	flake8 src
-	pylint src
+	pylint src --load-plugins pylint_django
 	mypy src
 
 format:
