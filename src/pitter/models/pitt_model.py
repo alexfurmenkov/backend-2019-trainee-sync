@@ -9,13 +9,10 @@ class Pitt(BaseModel):
 
     @staticmethod
     def create_pitt(user_id, audio_path, audio_decoded):
-<<<<<<< HEAD
         """
         Creates a Pitt object and saves it into the DB
         :return: Pitt object
         """
-=======
->>>>>>> master
         return Pitt.objects.create(
             user_id=user_id,
             audio_path=audio_path,

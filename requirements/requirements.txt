@@ -3,10 +3,6 @@ djangorestframework==3.10.3
 drf-yasg==1.17.0
 PyYAML==5.1.2
 psycopg2-binary==2.8.4
-<<<<<<< HEAD
 psycopg2
 pyjwt
 django-mailgun
-=======
-
->>>>>>> master

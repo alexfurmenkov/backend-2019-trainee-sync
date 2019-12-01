@@ -12,11 +12,7 @@ services:
       - postgresql
       - pitter_async
   pitter_async:
-<<<<<<< HEAD
     build: ../async
-=======
-    build: ../async/
->>>>>>> master
     volumes:
       - ../async/src/:/src/src/
     env_file:

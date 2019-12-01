@@ -9,10 +9,6 @@ mypy
 pytest
 pytest-asyncio
 pytest-coverage
-<<<<<<< HEAD
-
-=======
 pyjwt
 psycopg2
 django-mailgun
->>>>>>> master

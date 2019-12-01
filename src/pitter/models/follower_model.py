@@ -9,13 +9,10 @@ class Follower(BaseModel):
 
     @staticmethod
     def create_follower(user_id, follower_id, subscription_flag):
-<<<<<<< HEAD
         """
         Creates a Follower object and saves it to DB
         :return: Follower object
         """
-=======
->>>>>>> master
         return Follower.objects.create(
             user_id=user_id,
             follower_id=follower_id,

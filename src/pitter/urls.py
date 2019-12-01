@@ -20,7 +20,6 @@ API_V1_URLS = [
 urlpatterns = [  # pylint: disable=invalid-name
     path('api/pitter/v1/', include((API_V1_URLS, 'pitter'), namespace='v1')),
     path('api/pitter/swagger/', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-<<<<<<< HEAD
     path('registration/', registration_view.Registration.as_view(), name='registration'),
     path('login/', login_view.Login.as_view(), name='user'),
     path('makepitt/', make_delete_pitt_view.MakeDeletePitt.as_view(), name='pitt'),
@@ -29,15 +28,5 @@ urlpatterns = [  # pylint: disable=invalid-name
     path('users/', getusers_view.GetUsers.as_view(), name='users'),
     path('finduser/', finduser_view.FindUser.as_view(), name='finduser'),
     path('feed/', feed_view.Feed.as_view(), name='feed'),
-=======
-    path('registration/', views.registration),
-    path('login/', views.login),
-    path('auth/', views.auth),
-    path('makepitt', views.makepitt),
-    path('savepitt/', views.savepitt),
-    path('follow/', views.follow),
-    path('users/', views.getusers),
-    path('finduser/', views.finduser),
->>>>>>> master
 ]
 
