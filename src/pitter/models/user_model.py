@@ -1,10 +1,8 @@
 from django.db import models
-from .base import default_uuid_id
 from .base import BaseModel
 
 
 class User(BaseModel):
-    id = models.CharField(default=default_uuid_id, primary_key=True, editable=False, max_length=256)
     login = models.CharField(max_length=64)
     password = models.CharField(max_length=128)
     profile_name = models.CharField(max_length=32)
@@ -12,6 +10,10 @@ class User(BaseModel):
     email_notifications_mode = models.BooleanField()
 
     def to_dict(self) -> dict:
+        """
+        Creates a dictionary and returns it
+        :return: dictionary
+        """
         return dict(
             id=self.id,
             login=self.login,
@@ -22,9 +24,12 @@ class User(BaseModel):
         )
 
     @staticmethod
-    def create_user(id, login, password, profile_name, email_address, email_notifications_mode):
+    def create_user(login, password, profile_name, email_address, email_notifications_mode):
+        """
+        Creates a user and saves it to DB
+        :return: User object
+        """
         return User.objects.create(
-            id=id,
             login=login,
             password=password,
             profile_name=profile_name,

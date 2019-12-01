@@ -12,6 +12,10 @@ class Ticket(BaseModel):
     user_comment = models.TextField()
 
     def to_dict(self) -> dict:
+        """
+        Creates a dictionary with a ticket properties
+        :return: dictionary
+        """
         return dict(
             id=self.id,
             fakeId=self.fake_id,
@@ -21,6 +25,10 @@ class Ticket(BaseModel):
 
     @staticmethod
     def create_ticket(fake_id: str, message: str, user_comment: str) -> Ticket:
+        """
+        Creates a Ticket object and saves it into the DB
+        :return: Ticket object
+        """
         return Ticket.objects.create(
             fake_id=fake_id,
             message=message,
@@ -29,4 +37,8 @@ class Ticket(BaseModel):
 
     @staticmethod
     def get_tickets() -> QuerySet:
+        """
+        Used to find a Ticket object
+        :return: Ticket object
+        """
         return Ticket.objects.find().order_by('created_at')

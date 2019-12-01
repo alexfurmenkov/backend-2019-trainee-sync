@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import exceptions
 from rest_framework.authentication import get_authorization_header
@@ -12,10 +11,13 @@ class TokenAuthentication(APIView):
     def get(self, request):
         auth_token = get_authorization_header(request).split()
         if not auth_token:
-            raise exceptions.AuthenticationFailed('Tocken is not set')
+            raise exceptions.AuthenticationFailed('Token is not set')
 
         else:
             payload = jwt.decode(auth_token[0], public_k, algorithm='RS256')
             email = payload['email']
             name = payload['name']
-            return HttpResponse(f'email: {email}\nname: {name}')
+            return dict(
+                email=email,
+                name=name,
+            )
