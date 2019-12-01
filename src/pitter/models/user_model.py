@@ -36,4 +36,3 @@ class User(BaseModel):
             email_address=email_address,
             email_notifications_mode=email_notifications_mode,
         )
-

@@ -29,4 +29,3 @@ urlpatterns = [  # pylint: disable=invalid-name
     path('finduser/', finduser_view.FindUser.as_view(), name='finduser'),
     path('feed/', feed_view.Feed.as_view(), name='feed'),
 ]
-

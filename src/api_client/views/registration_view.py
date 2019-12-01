@@ -1,18 +1,23 @@
 import hashlib
-
 import django
-from rest_framework.views import APIView
 
+from rest_framework.views import APIView
 from rest_framework.response import Response
+
 from pitter.decorators import request_post_serializer
-from api_client.validation_serializers.user_serializers import ReistrationPostRequest, DeletePostRequest
 from pitter.models import User
+from api_client.validation_serializers.user_serializers import ReistrationPostRequest, DeletePostRequest
 
 
 class Registration(APIView):
     @classmethod
     @request_post_serializer(ReistrationPostRequest)
     def post(cls, request) -> Response:
+        """
+        Registers a new user
+        :param request:
+        :return: Response dict
+        """
         try:
             user_query = request.data
             login = user_query['login']
@@ -33,11 +38,16 @@ class Registration(APIView):
     @classmethod
     @request_post_serializer(DeletePostRequest)
     def delete(cls, request) -> Response:
+        """
+        Deletes existing user
+        :param request:
+        :return: Response dict
+        """
         user_query = request.data
-        id = user_query['id']
+        user_id = user_query['id']
 
         try:
-            user_do_delete = User.objects.get(id=id)
+            user_do_delete = User.objects.get(id=user_id)
             user_do_delete.delete()
             returned_data = dict(
                 login=user_do_delete.login,
@@ -47,6 +57,3 @@ class Registration(APIView):
             return Response(returned_data, status=200)
         except User.DoesNotExist:
             return Response('User is not found.')
-
-
-

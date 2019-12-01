@@ -5,6 +5,7 @@ isort
 black
 flake8
 pylint
+pylint-django
 mypy
 pytest
 pytest-asyncio

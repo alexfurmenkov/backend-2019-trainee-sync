@@ -53,4 +53,4 @@ class FeedRequest(serializers.Serializer):
     """
     Feed serializer
     """
-    pass
+    time = serializers.IntegerField(label='time', max_length=256)

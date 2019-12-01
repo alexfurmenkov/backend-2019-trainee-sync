@@ -1,18 +1,24 @@
 import requests
 
-from pitter.acc_actions.auth import TokenAuthentication
 from rest_framework.views import APIView
-
 from rest_framework.response import Response
+
+from pitter.acc_actions.auth import TokenAuthentication
 from pitter.decorators import request_post_serializer
-from api_client.validation_serializers.pitt_serializers import PittRequest, DeletePittRequest
 from pitter.models import User, Pitt
+
+from api_client.validation_serializers.pitt_serializers import PittRequest, DeletePittRequest
 
 
 class MakeDeletePitt(APIView):
     @classmethod
     @request_post_serializer(PittRequest)
     def post(cls, request) -> Response:
+        """
+        Makes a pitt
+        :param request:
+        :return: Response dict
+        """
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
 
@@ -24,7 +30,7 @@ class MakeDeletePitt(APIView):
         headers = {"Content-Type": "application/json"}
         url = 'http://localhost:8118/voice/'
         try:
-            r = requests.post(url=url, data=data, headers=headers)
+            requests.post(url=url, data=data, headers=headers)
             response = Response(data['audio_path'], status=200)
             return response
         except requests.RequestException:
@@ -33,6 +39,11 @@ class MakeDeletePitt(APIView):
     @classmethod
     @request_post_serializer(DeletePittRequest)
     def delete(cls, request) -> Response:
+        """
+        Deletes a pitt
+        :param request:
+        :return: Response dict
+        """
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
 
@@ -46,7 +57,3 @@ class MakeDeletePitt(APIView):
             return Response(returned_data, status=200)
         except Pitt.DoesNotExist:
             return Response('Pitt is not found.')
-
-
-
-

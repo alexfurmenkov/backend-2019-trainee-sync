@@ -1,18 +1,24 @@
+import datetime
 from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from pitter.decorators import request_post_serializer
 from pitter.acc_actions.auth import TokenAuthentication
 from pitter.models.user_model import User
 from pitter.models.follower_model import Follower
 from pitter.models.pitt_model import Pitt
-from rest_framework.response import Response
-from pitter.decorators import request_post_serializer
+
 from api_client.validation_serializers.user_serializers import FeedRequest
-import datetime
 
 
 class Feed(APIView):
     @classmethod
     @request_post_serializer(FeedRequest)
     def post(cls, request) -> Response:
+        """
+        Displays the feed
+        :return: Response with the list of the pitts
+        """
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
 
@@ -29,8 +35,6 @@ class Feed(APIView):
             if pitt.user_id == user_id:
                 pitt_info = (pitt.audio_decoded, pitt.created_at)
                 feed_pitts.append(pitt_info)
-            else:
-                continue
 
         if request.data['time']:
             current_time = datetime.datetime.now()
@@ -41,5 +45,3 @@ class Feed(APIView):
 
         elif not request.data['time']:
             return Response(feed_pitts, status=200)
-
-

@@ -4,6 +4,10 @@ from django.db import models
 
 
 def default_uuid_id() -> str:
+    """
+    Creates an id
+    :return: id
+    """
     return str(uuid.uuid4()).replace('-', '')
 
 
@@ -14,5 +18,3 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-
-

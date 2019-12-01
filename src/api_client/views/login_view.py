@@ -1,10 +1,13 @@
-from rest_framework.views import APIView
-from pitter.models.user_model import User
 import jwt
 import hashlib
-from pitter.acc_actions.keys import private_k
+
+from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from pitter.models.user_model import User
+from pitter.acc_actions.keys import private_k
 from pitter.decorators import request_post_serializer
+
 from api_client.validation_serializers.user_serializers import UserPostRequest
 
 
@@ -12,6 +15,11 @@ class Login(APIView):
     @classmethod
     @request_post_serializer(UserPostRequest)
     def post(cls, request) -> Response:
+        """
+        JWT authentification
+        :param request:
+        :return: Response dict
+        """
         login = request.data['login']
         password = hashlib.sha256(request.data['password'].encode('utf-8')).hexdigest()
 
