@@ -50,10 +50,13 @@ class MakeDeletePitt(APIView):
         try:
             pitt_id = request.data['id']
             pitt = Pitt.objects.get(id=pitt_id)
-            pitt.delete()
-            returned_data = dict(
-                id=pitt_id
-            )
-            return Response(returned_data, status=200)
+
         except Pitt.DoesNotExist:
             return Response('Pitt is not found.')
+
+        pitt.delete()
+        returned_data = dict(
+            id=pitt_id
+        )
+        return Response(returned_data, status=200)
+

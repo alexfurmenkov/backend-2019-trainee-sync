@@ -26,18 +26,17 @@ class Login(APIView):
         try:
             user = User.objects.get(login=login, password=password)
 
-            if user:
-                payload = {
-                    'email': user.email_address,
-                    'name': user.profile_name,
-                }
-                token = jwt.encode(payload, private_k, algorithm='RS256')
-                returned_data = dict(
-                    token=token,
-                    email=payload['email'],
-                    name=payload['name'],
-                )
-                response = Response(returned_data, status=200)
-                return response
         except User.DoesNotExist:
             return Response('User is not found.')
+
+        payload = {
+            'email': user.email_address,
+            'name': user.profile_name,
+        }
+        token = jwt.encode(payload, private_k, algorithm='RS256')
+        returned_data = dict(
+            token=token,
+            email=payload['email'],
+            name=payload['name'],
+        )
+        return Response(returned_data, status=200)
