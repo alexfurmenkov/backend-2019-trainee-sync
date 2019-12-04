@@ -16,7 +16,6 @@ class Follow(APIView):
     def post(cls, request) -> Response:
         """
         Used to create a subscription on a user
-        :param request:
         :return: Response dict
         """
         user_auth = TokenAuthentication()

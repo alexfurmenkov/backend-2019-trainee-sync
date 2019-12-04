@@ -33,7 +33,7 @@ class MakeDeletePitt(APIView):
             requests.post(url=url, data=data, headers=headers)
             response = Response(data['audio_path'], status=200)
             return response
-        except requests.RequestException:
+        except requests.ConnectionError:
             return Response('Unable to connect to the server.')
 
     @classmethod
