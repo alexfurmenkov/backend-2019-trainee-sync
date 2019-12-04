@@ -33,7 +33,7 @@ class MakeDeletePitt(APIView):
             requests.post(url=url, data=data, headers=headers)
             response = Response(data['audio_path'], status=200)
             return response
-        except requests.RequestException:
+        except requests.ConnectionError:
             return Response('Unable to connect to the server.')
 
     @classmethod
@@ -50,10 +50,13 @@ class MakeDeletePitt(APIView):
         try:
             pitt_id = request.data['id']
             pitt = Pitt.objects.get(id=pitt_id)
-            pitt.delete()
-            returned_data = dict(
-                id=pitt_id
-            )
-            return Response(returned_data, status=200)
+
         except Pitt.DoesNotExist:
             return Response('Pitt is not found.')
+
+        pitt.delete()
+        returned_data = dict(
+            id=pitt_id
+        )
+        return Response(returned_data, status=200)
+

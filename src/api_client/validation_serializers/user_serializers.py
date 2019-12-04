@@ -42,15 +42,8 @@ class FindPostRequest(serializers.Serializer):
     login = serializers.CharField(required=True, label='login', max_length=256)
 
 
-class GetUsersRequest(serializers.Serializer):
-    """
-    Get all users serializer
-    """
-    pass
-
-
 class FeedRequest(serializers.Serializer):
     """
     Feed serializer
     """
-    time = serializers.IntegerField(label='time', max_length=256)
+    time = serializers.IntegerField(required=False, label='time')
