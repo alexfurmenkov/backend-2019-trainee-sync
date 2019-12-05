@@ -19,7 +19,11 @@ class GetUsers(APIView):
         users_list = []
 
         for user in all_users:
-            user_info = {'login': user.login, 'profile': f'http://localhost:8000/finduser/?login={user.login}'}
+            user_info = dict(
+                id=user.id,
+                login=user.login,
+                profile=f'http://localhost:8000/finduser/?login={user.login}',
+            )
             users_list.append(user_info)
 
         returned_data = dict(

@@ -37,7 +37,8 @@ class Feed(APIView):
                 if pitt.user_id == user_id:
                     user = User.objects.get(id=user_id)
                     user_login = user.login
-                    pitt_info = [user_login, pitt.audio_decoded, pitt.created_at, pitt.id]
+                    user_profile = f'http://localhost:8000/finduser/?login={user_login}'
+                    pitt_info = [user_login, user_profile, pitt.audio_decoded, pitt.created_at, pitt.id]
                     feed_pitts.append(pitt_info)
 
         p = Paginator(feed_pitts, 2)

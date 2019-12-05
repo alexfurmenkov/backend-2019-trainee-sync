@@ -32,6 +32,7 @@ class Login(APIView):
         payload = {
             'email': user.email_address,
             'name': user.profile_name,
+            # 'exp': 1000
         }
         token = jwt.encode(payload, private_k, algorithm='RS256')
         returned_data = dict(
