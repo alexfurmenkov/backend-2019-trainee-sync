@@ -59,4 +59,3 @@ class MakeDeletePitt(APIView):
             id=pitt_id
         )
         return Response(returned_data, status=200)
-

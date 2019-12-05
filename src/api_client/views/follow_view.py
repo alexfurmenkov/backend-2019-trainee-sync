@@ -68,9 +68,16 @@ class Follow(APIView):
         :param request:
         :return: Response dict
         """
+        user_auth = TokenAuthentication()
+        access = user_auth.get(request)
+
+        follower_email = access['email']
+        follower = User.objects.get(email_address=follower_email)
+        follower_id = follower.id
+
         login = request.data['login']
         user = User.objects.get(login=login)
         user_id = user.id
-        user_do_delete = Follower.objects.get(user_id=user_id)
+        user_do_delete = Follower.objects.get(user_id=user_id, follower_id=follower_id)
         user_do_delete.delete()
         return Response(login, status=200)

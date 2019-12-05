@@ -27,7 +27,6 @@ class FindUser(APIView):
         login = data['login']
         all_pitts = Pitt.objects.all()
         feed_pitts = []
-        sub_email = access['email']
         follow_link = f'http://localhost:8000/node/?login={login}&subscription_flag=True&token={auth_token}'
 
         try:
@@ -49,4 +48,3 @@ class FindUser(APIView):
             follow_link=follow_link,
         )
         return Response(returned_data, status=200)
-
