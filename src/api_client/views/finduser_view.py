@@ -4,14 +4,14 @@ from rest_framework.response import Response
 from pitter.acc_actions.auth import TokenAuthentication
 from pitter.models import Pitt
 from pitter.models.user_model import User
-from pitter.decorators import request_post_serializer
+from pitter.decorators import request_query_serializer
 
-from api_client.validation_serializers.user_serializers import FindPostRequest
+from api_client.validation_serializers.user_serializers import FindRequest
 
 
 class FindUser(APIView):
     @classmethod
-    @request_post_serializer(FindPostRequest)
+    @request_query_serializer(FindRequest)
     def get(cls, request) -> Response:
         """
         Finds user in the DB with the login from the query
@@ -21,11 +21,11 @@ class FindUser(APIView):
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
 
-        data = request.data
+        data = request.query_params
         login = data['login']
         all_pitts = Pitt.objects.all()
         feed_pitts = []
-        follow_link = f'http://localhost:8000/follow/?login={login}&subscription_flag=True'
+        follow_link = f'http://localhost:8000/node/?login={login}&subscription_flag=True'
 
         try:
             user = User.objects.get(login=login)

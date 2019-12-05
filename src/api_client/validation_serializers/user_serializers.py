@@ -35,7 +35,7 @@ class FollowPostRequest(serializers.Serializer):
     subscription_flag = serializers.BooleanField(required=True, label='subscription_flag')
 
 
-class FindPostRequest(serializers.Serializer):
+class FindRequest(serializers.Serializer):
     """
     Find user serializer
     """
