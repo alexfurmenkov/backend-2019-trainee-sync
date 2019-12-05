@@ -47,3 +47,11 @@ class FeedRequest(serializers.Serializer):
     Feed serializer
     """
     time = serializers.IntegerField(required=False, label='time')
+
+
+class NodeRequest(serializers.Serializer):
+    """
+    Follow node serializer
+    """
+    login = serializers.CharField(required=True, label='login', max_length=256)
+    subscription_flag = serializers.BooleanField(required=True, label='subscription_flag')

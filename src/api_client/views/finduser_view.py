@@ -1,3 +1,4 @@
+from rest_framework.authentication import get_authorization_header
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -19,13 +20,15 @@ class FindUser(APIView):
         :return: Response dict with the user data
         """
         user_auth = TokenAuthentication()
+        auth_token = get_authorization_header(request)
         access = user_auth.get(request)
 
         data = request.query_params
         login = data['login']
         all_pitts = Pitt.objects.all()
         feed_pitts = []
-        follow_link = f'http://localhost:8000/node/?login={login}&subscription_flag=True'
+        sub_email = access['email']
+        follow_link = f'http://localhost:8000/node/?login={login}&subscription_flag=True&token={auth_token}'
 
         try:
             user = User.objects.get(login=login)

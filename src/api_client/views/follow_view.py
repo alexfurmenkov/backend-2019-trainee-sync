@@ -34,7 +34,6 @@ class Follow(APIView):
             return Response('User is not found.', status=200)
 
         user_id = find_user.id
-
         user_email = find_user.email_address
         follower_login = find_follower.login
 
@@ -46,14 +45,20 @@ class Follow(APIView):
                   "subject": "New follower",
                   "text": f'You have one new follower. His login: {follower_login}'}
         )
-        Follower.create_follower(user_id, follower_id, subscription_flag)
+
+        try:
+            existing_follower = Follower.objects.get(user_id=user_id, follower_id=follower_id)
+            if existing_follower:
+                return Response('You are already subscribed.', status=200)
+
+        except Follower.DoesNotExist:
+            Follower.create_follower(user_id, follower_id, subscription_flag)
         returned_data = dict(
             user_id=user_id,
             follower_id=follower_id,
             subscription_flag=subscription_flag,
         )
         return Response(returned_data, status=200)
-
 
     @classmethod
     @request_post_serializer(FollowPostRequest)
