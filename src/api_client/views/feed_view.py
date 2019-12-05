@@ -23,22 +23,23 @@ class Feed(APIView):
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
         feed_pitts = []
+        users = []
 
-        profile_name = access['name']
-        follower = User.objects.get(profile_name=profile_name)
-        follower_id = follower.id
-        follower_object = Follower.objects.get(follower_id=follower_id)
-        user_id = follower_object.user_id
+        follower_object = Follower.objects.all()
         all_pitts = Pitt.objects.all()
 
-        for pitt in all_pitts:
-            if pitt.user_id == user_id:
-                user = User.objects.get(id=user_id)
-                user_login = user.login
-                pitt_info = [user_login, pitt.audio_decoded, pitt.created_at, pitt.id]
-                feed_pitts.append(pitt_info)
+        for foll in follower_object:
+            users.append(foll.user_id)
 
-        p = Paginator(feed_pitts, 2)
+        for pitt in all_pitts:
+            for user_id in users:
+                if pitt.user_id == user_id:
+                    user = User.objects.get(id=user_id)
+                    user_login = user.login
+                    pitt_info = [user_login, pitt.audio_decoded, pitt.created_at, pitt.id]
+                    feed_pitts.append(pitt_info)
+
+        p = Paginator(feed_pitts, 3)
 
         if 'page' in request.data:
             page_number = request.data['page']
