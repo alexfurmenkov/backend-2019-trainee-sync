@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from pitter.decorators import request_post_serializer
 from pitter.models import User
-from api_client.validation_serializers.user_serializers import ReistrationPostRequest, DeletePostRequest
+from api_client.validation_serializers.user_serializers import ReistrationPostRequest, DeleteAccountRequest
 
 
 class Registration(APIView):
@@ -36,7 +36,7 @@ class Registration(APIView):
             return Response('User already exists.')
 
     @classmethod
-    @request_post_serializer(DeletePostRequest)
+    @request_post_serializer(DeleteAccountRequest)
     def delete(cls, request) -> Response:
         """
         Deletes existing user

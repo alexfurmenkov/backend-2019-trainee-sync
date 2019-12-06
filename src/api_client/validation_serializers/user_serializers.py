@@ -12,7 +12,7 @@ class ReistrationPostRequest(serializers.Serializer):
     email_notifications_mode = serializers.BooleanField(required=True, label='email_notifications_mode')
 
 
-class DeletePostRequest(serializers.Serializer):
+class DeleteAccountRequest(serializers.Serializer):
     """
     Delete account serializer
     """
@@ -66,3 +66,10 @@ class NodeRequest(serializers.Serializer):
     """
     login = serializers.CharField(required=True, label='login', max_length=256)
     subscription_flag = serializers.BooleanField(required=True, label='subscription_flag')
+
+
+class DeleteNodeRequest(serializers.Serializer):
+    """
+    Delete account node serializer
+    """
+    id = serializers.CharField(required=True, label='login', max_length=256)
