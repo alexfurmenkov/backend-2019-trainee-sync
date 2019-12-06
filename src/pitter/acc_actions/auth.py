@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import exceptions
 from rest_framework.authentication import get_authorization_header
+
 import jwt
 from .keys import public_k
 
@@ -14,10 +16,16 @@ class TokenAuthentication(APIView):
             raise exceptions.AuthenticationFailed('Token is not set')
 
         else:
-            payload = jwt.decode(auth_token[0], public_k, algorithm='RS256')
+            if auth_token[0] == b'Bearer':
+                payload = jwt.decode(auth_token[1], public_k, algorithm='RS256')
+            else:
+                payload = jwt.decode(auth_token[0], public_k, algorithm='RS256')
+
             email = payload['email']
             name = payload['name']
+            exp = payload['exp']
             return dict(
                 email=email,
                 name=name,
+                exp=exp,
             )

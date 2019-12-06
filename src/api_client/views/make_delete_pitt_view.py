@@ -56,6 +56,6 @@ class MakeDeletePitt(APIView):
 
         pitt.delete()
         returned_data = dict(
-            id=pitt_id
+            id=pitt_id,
         )
         return Response(returned_data, status=200)
