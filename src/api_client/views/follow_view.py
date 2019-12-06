@@ -7,7 +7,7 @@ from pitter.models import Follower
 from pitter.models.user_model import User
 from pitter.decorators import request_post_serializer
 
-from api_client.validation_serializers.user_serializers import FollowPostRequest
+from api_client.validation_serializers.user_serializers import FollowPostRequest, DeleteRequest
 
 
 class Follow(APIView):
@@ -61,7 +61,7 @@ class Follow(APIView):
         return Response(returned_data, status=200)
 
     @classmethod
-    @request_post_serializer(FollowPostRequest)
+    @request_post_serializer(DeleteRequest)
     def delete(cls, request) -> Response:
         """
         Used to delete a subscription on a user

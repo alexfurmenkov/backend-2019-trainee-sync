@@ -39,6 +39,13 @@ class FollowPostRequest(serializers.Serializer):
     subscription_flag = serializers.BooleanField(required=True, label='subscription_flag')
 
 
+class DeleteRequest(serializers.Serializer):
+    """
+    Unfolllow serializer
+    """
+    login = serializers.CharField(required=True, label='login', max_length=256)
+
+
 class FindRequest(serializers.Serializer):
     """
     Find user serializer

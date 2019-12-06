@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from pitter.acc_actions.auth import TokenAuthentication
-from pitter.models import Pitt
+from pitter.models import Pitt, Follower
 from pitter.models.user_model import User
 from pitter.decorators import request_query_serializer
 
@@ -25,12 +25,14 @@ class FindUser(APIView):
 
         data = request.query_params
         login = data['login']
-        all_pitts = Pitt.objects.all()
         feed_pitts = []
         follow_link = f'http://localhost:8000/node/?login={login}&subscription_flag=True&token={auth_token}'
+        unfollow_link = f'http://localhost:8000/node/?login={login}&unfollow=True&token={auth_token}'
+        all_pitts = Pitt.objects.all()
 
         try:
             user = User.objects.get(login=login)
+            follower = User.objects.get(email_address=access['email'])
 
         except User.DoesNotExist:
             return Response('User is not found.', status=200)
@@ -47,4 +49,12 @@ class FindUser(APIView):
             pitts=feed_pitts,
             follow_link=follow_link,
         )
-        return Response(returned_data, status=200)
+
+        try:
+            follower_exists = Follower.objects.get(user_id=user.id, follower_id=follower.id)
+            if follower_exists:
+                returned_data['unfollow_link'] = unfollow_link
+            return Response(returned_data, status=200)
+
+        except Follower.DoesNotExist:
+            return Response(returned_data, status=200)

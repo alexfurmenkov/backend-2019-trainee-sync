@@ -17,16 +17,23 @@ class Node(APIView):
         """
         params = request.query_params
         user_login = params['login']
-        subscription_flag = params['subscription_flag']
         token = params['token'][2:-1]
 
-        data = {'login': user_login, 'subscription_flag': subscription_flag}
         url = 'http://localhost:8000/follow/'
         headers = {'Authorization': token}
-        requests.post(url=url, headers=headers, data=data)
 
-        returned_data = dict(
-            text='you are subscribed',
-            login=user_login,
-        )
+        if 'unfollow' in params:
+            data = {'login': user_login}
+            requests.delete(url=url, headers=headers, data=data)
+            returned_data = dict(
+                text='you are unsubscribed',
+                login=user_login,
+            )
+        else:
+            data = {'login': user_login, 'subscription_flag': params['subscription_flag']}
+            requests.post(url=url, headers=headers, data=data)
+            returned_data = dict(
+                text='you are subscribed',
+                login=user_login,
+            )
         return Response(returned_data, status=200)

@@ -4,7 +4,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from api_client.views import registration_view, login_view, logout_view, make_delete_pitt_view, save_pitt_view, \
-    follow_view, getusers_view, finduser_view, feed_view, node_view
+    follow_view, getusers_view, finduser_view, feed_view, follow_node_view
 
 
 SchemaView = get_schema_view(
@@ -29,5 +29,5 @@ urlpatterns = [  # pylint: disable=invalid-name
     path('users/', getusers_view.GetUsers.as_view(), name='users'),
     path('finduser/', finduser_view.FindUser.as_view(), name='finduser'),
     path('feed/', feed_view.Feed.as_view(), name='feed'),
-    path('node/', node_view.Node.as_view(), name='node'),
+    path('node/', follow_node_view.Node.as_view(), name='node'),
 ]
