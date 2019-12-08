@@ -27,7 +27,7 @@ class FindUser(APIView):
         login = data['login']
         feed_pitts = []
         follow_link = f'http://localhost:8000/follownode/?login={login}&subscription_flag=True&token={auth_token}'
-        unfollow_link = f'http://localhost:8000/node/?login={login}&unfollow=True&token={auth_token}'
+        unfollow_link = f'http://localhost:8000/follownode/?login={login}&unfollow=True&token={auth_token}'
         all_pitts = Pitt.objects.all()
 
         try:
@@ -47,7 +47,6 @@ class FindUser(APIView):
             login=user.login,
             email=user.email_address,
             pitts=feed_pitts,
-            follow_link=follow_link,
         )
 
         try:
@@ -57,4 +56,5 @@ class FindUser(APIView):
             return Response(returned_data, status=200)
 
         except Follower.DoesNotExist:
+            returned_data['follow_link'] = follow_link
             return Response(returned_data, status=200)
