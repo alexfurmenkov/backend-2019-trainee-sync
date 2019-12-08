@@ -9,7 +9,8 @@ from .keys import public_k
 class TokenAuthentication(APIView):
     auth_token = ''
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         auth_token = get_authorization_header(request).split()
         if not auth_token:
             raise exceptions.AuthenticationFailed('Token is not set')

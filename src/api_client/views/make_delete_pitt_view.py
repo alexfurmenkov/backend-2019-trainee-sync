@@ -45,8 +45,7 @@ class MakeDeletePitt(APIView):
         :param request:
         :return: Response dict
         """
-        user_auth = TokenAuthentication()
-        access = user_auth.get(request)
+        TokenAuthentication.get(request)
 
         try:
             pitt_id = request.data['id']

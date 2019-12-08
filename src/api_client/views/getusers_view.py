@@ -12,8 +12,7 @@ class GetUsers(APIView):
         Used to diaplay all users
         :return: Response dict
         """
-        user_auth = TokenAuthentication()
-        access = user_auth.get(request)
+        TokenAuthentication.get(request)
 
         all_users = User.objects.all()
         users_list = []
