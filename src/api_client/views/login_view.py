@@ -17,8 +17,7 @@ class Login(APIView):
     def post(cls, request) -> Response:
         """
         JWT authentification
-        :param request:
-        :return: Response dict
+        :return: Response dict with auth_token
         """
         login = request.data['login']
         password = hashlib.sha256(request.data['password'].encode('utf-8')).hexdigest()

@@ -16,8 +16,7 @@ class MakeDeletePitt(APIView):
     def post(cls, request) -> Response:
         """
         Makes a pitt
-        :param request:
-        :return: Response dict
+        :return: Response with audio's name
         """
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
@@ -26,9 +25,11 @@ class MakeDeletePitt(APIView):
         user = User.objects.get(email_address=user_email)
         user_id = user.id
         audio_path = request.data['audio_path']
+
         data = {'user_id': user_id, 'audio_path': audio_path}
         headers = {"Content-Type": "application/json"}
         url = 'http://localhost:8118/voice/'
+
         try:
             requests.post(url=url, data=data, headers=headers)
             response = Response(data['audio_path'], status=200)
