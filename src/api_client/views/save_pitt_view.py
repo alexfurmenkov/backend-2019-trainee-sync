@@ -1,3 +1,5 @@
+import base64
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -17,6 +19,6 @@ class SavePitt(APIView):
         data = request.data
         user_id = data['user_id']
         audio_path = data['audio_path']
-        audio_decoded = data['audio_decoded']
-        Pitt.create_pitt(user_id, audio_path, audio_decoded)
+        audio_decoded = base64.b64decode(data['audio_decoded'])
+        Pitt.create_pitt(user_id, audio_path, audio_decoded.decode('utf-8'))
         return Response(data)

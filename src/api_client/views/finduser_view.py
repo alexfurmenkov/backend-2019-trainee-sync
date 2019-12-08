@@ -20,7 +20,7 @@ class FindUser(APIView):
         :return: Response dict with the user data
         """
         access = TokenAuthentication.get(request)
-        auth_token = get_authorization_header(request)
+        auth_token = get_authorization_header(request).decode('utf-8')
 
         data = request.query_params
         login = data['login']

@@ -17,7 +17,7 @@ class Node(APIView):
         """
         params = request.query_params
         user_login = params['login']
-        token = params['token'][2:-1]
+        token = params['token']
 
         url = 'http://localhost:8000/follow/'
         headers = {'Authorization': token}
