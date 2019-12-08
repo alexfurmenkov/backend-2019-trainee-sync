@@ -60,4 +60,3 @@ class Registration(APIView):
             email_address=user_do_delete.email_address,
         )
         return Response(returned_data, status=200)
-
