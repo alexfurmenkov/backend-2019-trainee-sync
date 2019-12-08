@@ -13,27 +13,24 @@ class Profile(APIView):
         User profile
         :return: Response dict with the user's data
         """
-        user_auth = TokenAuthentication()
+        access = TokenAuthentication.get(request)
         auth_token = get_authorization_header(request)
-        access = user_auth.get(request)
 
         user_email = access['email']
         user_profile_name = access['name']
         user = User.objects.get(email_address=user_email, profile_name=user_profile_name)
-        user_id = user.id
-        user_login = user.login
 
         feed_link = 'http://localhost:8000/feed/'
         makepitt_link = 'http://localhost:8000/makepitt/'
         finduser_link = 'http://localhost:8000/finduser/'
         all_users_link = 'http://localhost:8000/users/'
         logout_link = 'http://localhost:8000/logout/'
-        delete_link = f'http://localhost:8000/deletenode/?id={user_id}&token={auth_token}'
+        delete_link = f'http://localhost:8000/deletenode/?id={user.id}&token={auth_token}'
 
         returned_data = dict(
             user_data=dict(
-                id=user_id,
-                login=user_login,
+                id=user.id,
+                login=user.login,
                 profile_name=user_profile_name,
                 email_address=user_email,
             ),

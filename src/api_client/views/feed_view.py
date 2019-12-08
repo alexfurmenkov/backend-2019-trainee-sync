@@ -21,44 +21,35 @@ class Feed(APIView):
         Displays the feed
         :return: Response with the list of the pitts
         """
-        user_auth = TokenAuthentication()
-        access = user_auth.get(request)
-        params = request.query_params
+        access = TokenAuthentication.get(request)
         feed_pitts = []
         users = []
 
         follower_email = access['email']
         follower = User.objects.get(email_address=follower_email)
-        follower_id = follower.id
-        follower_login = follower.login
 
-        all_followers = Follower.objects.all()
-        all_pitts = Pitt.objects.all()
-
-        for foll in all_followers:
-            if foll.follower_id == follower_id:
+        for foll in Follower.objects.all():
+            if foll.follower_id == follower.id:
                 users.append(foll.user_id)
 
-        for pitt in all_pitts:
+        for pitt in Pitt.objects.all():
             for user_id in users:
                 if pitt.user_id == user_id:
                     user = User.objects.get(id=user_id)
-                    user_login = user.login
-                    user_profile = f'http://localhost:8000/finduser/?login={user_login}'
-                    pitt_info = [user_login, user_profile, pitt.audio_decoded, pitt.created_at, pitt.id]
+                    pitt_info = [user.login, f'http://localhost:8000/finduser/?login={user.login}',
+                                 pitt.audio_decoded, pitt.created_at, pitt.id]
                     feed_pitts.append(pitt_info)
 
-            if pitt.user_id == follower_id:
-                follower_profile = f'http://localhost:8000/finduser/?login={follower_login}'
-                pitt_info = [follower_login, follower_profile, pitt.audio_decoded, pitt.created_at, pitt.id]
+            if pitt.user_id == follower.id:
+                pitt_info = [follower.login, f'http://localhost:8000/finduser/?login={follower.login}',
+                             pitt.audio_decoded, pitt.created_at, pitt.id]
                 feed_pitts.append(pitt_info)
 
         feed_pitts.reverse()
         feed = Paginator(feed_pitts, 2)
 
-        if 'page' in params:
-            query_page = params['page']
-            page_number = query_page
+        if 'page' in request.query_params:
+            page_number = request.query_params['page']
         else:
             page_number = 1
 
@@ -67,4 +58,4 @@ class Feed(APIView):
             return Response(page.object_list, status=200)
 
         except django.core.paginator.EmptyPage:
-            return Response('This page is not existing', status=200)
+            return Response('This page does not exist', status=200)

@@ -19,16 +19,14 @@ class FindUser(APIView):
         :param request:
         :return: Response dict with the user data
         """
-        user_auth = TokenAuthentication()
+        access = TokenAuthentication.get(request)
         auth_token = get_authorization_header(request)
-        access = user_auth.get(request)
 
         data = request.query_params
         login = data['login']
         feed_pitts = []
         follow_link = f'http://localhost:8000/follownode/?login={login}&subscription_flag=True&token={auth_token}'
         unfollow_link = f'http://localhost:8000/follownode/?login={login}&unfollow=True&token={auth_token}'
-        all_pitts = Pitt.objects.all()
 
         try:
             user = User.objects.get(login=login)
@@ -37,7 +35,7 @@ class FindUser(APIView):
         except User.DoesNotExist:
             return Response('User is not found.', status=200)
 
-        for pitt in all_pitts:
+        for pitt in Pitt.objects.all():
             if pitt.user_id == user.id:
                 pitt_info = (pitt.audio_decoded, pitt.created_at)
                 feed_pitts.append(pitt_info)
