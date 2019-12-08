@@ -12,14 +12,17 @@ class GetUsers(APIView):
         Used to diaplay all users
         :return: Response dict
         """
-        user_auth = TokenAuthentication()
-        access = user_auth.get(request)
+        TokenAuthentication.get(request)
 
         all_users = User.objects.all()
         users_list = []
 
         for user in all_users:
-            user_info = {'login': user.login, 'profile': f'http://localhost:8000/finduser/?login={user.login}'}
+            user_info = dict(
+                id=user.id,
+                login=user.login,
+                profile=f'http://localhost:8000/finduser/?login={user.login}',
+            )
             users_list.append(user_info)
 
         returned_data = dict(

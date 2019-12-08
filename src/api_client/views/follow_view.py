@@ -7,7 +7,7 @@ from pitter.models import Follower
 from pitter.models.user_model import User
 from pitter.decorators import request_post_serializer
 
-from api_client.validation_serializers.user_serializers import FollowPostRequest
+from api_client.validation_serializers.user_serializers import FollowPostRequest, DeleteRequest
 
 
 class Follow(APIView):
@@ -18,10 +18,9 @@ class Follow(APIView):
         Used to create a subscription on a user
         :return: Response dict
         """
-        user_auth = TokenAuthentication()
-        access = user_auth.get(request)
+        access = TokenAuthentication.get(request)
 
-        subscription_flag = request.data['subscription_flag']
+        subscription_flag = True
         subscriber_email = access['email']
         user_login = request.data['login']
 
@@ -34,7 +33,6 @@ class Follow(APIView):
             return Response('User is not found.', status=200)
 
         user_id = find_user.id
-
         user_email = find_user.email_address
         follower_login = find_follower.login
 
@@ -46,7 +44,14 @@ class Follow(APIView):
                   "subject": "New follower",
                   "text": f'You have one new follower. His login: {follower_login}'}
         )
-        Follower.create_follower(user_id, follower_id, subscription_flag)
+
+        try:
+            existing_follower = Follower.objects.get(user_id=user_id, follower_id=follower_id)
+            if existing_follower:
+                return Response('You are already subscribed.', status=200)
+
+        except Follower.DoesNotExist:
+            Follower.create_follower(user_id, follower_id, subscription_flag)
         returned_data = dict(
             user_id=user_id,
             follower_id=follower_id,
@@ -54,18 +59,24 @@ class Follow(APIView):
         )
         return Response(returned_data, status=200)
 
-
     @classmethod
-    @request_post_serializer(FollowPostRequest)
+    @request_post_serializer(DeleteRequest)
     def delete(cls, request) -> Response:
         """
         Used to delete a subscription on a user
         :param request:
         :return: Response dict
         """
+        user_auth = TokenAuthentication()
+        access = user_auth.get(request)
+
+        follower_email = access['email']
+        follower = User.objects.get(email_address=follower_email)
+        follower_id = follower.id
+
         login = request.data['login']
         user = User.objects.get(login=login)
         user_id = user.id
-        user_do_delete = Follower.objects.get(user_id=user_id)
+        user_do_delete = Follower.objects.get(user_id=user_id, follower_id=follower_id)
         user_do_delete.delete()
         return Response(login, status=200)

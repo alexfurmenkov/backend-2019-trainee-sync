@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Follower',
             fields=[
-                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256,
+                                        primary_key=True, serialize=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('user_id', models.CharField(max_length=30)),
@@ -28,7 +29,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pitt',
             fields=[
-                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256,
+                                        primary_key=True, serialize=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('user_id', models.CharField(max_length=256)),
@@ -44,7 +46,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256,
+                                        primary_key=True, serialize=False)),
                 ('login', models.CharField(max_length=64)),
                 ('password', models.CharField(max_length=128)),
                 ('profile_name', models.CharField(max_length=32)),
