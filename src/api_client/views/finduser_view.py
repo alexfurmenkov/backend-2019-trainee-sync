@@ -25,7 +25,7 @@ class FindUser(APIView):
         data = request.query_params
         login = data['login']
         feed_pitts = []
-        follow_link = f'http://localhost:8000/follownode/?login={login}&subscription_flag=True&token={auth_token}'
+        follow_link = f'http://localhost:8000/follownode/?login={login}&token={auth_token}'
         unfollow_link = f'http://localhost:8000/follownode/?login={login}&unfollow=True&token={auth_token}'
 
         try:

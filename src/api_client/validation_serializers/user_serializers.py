@@ -32,7 +32,6 @@ class FollowPostRequest(serializers.Serializer):
     Folllow serializer
     """
     login = serializers.CharField(required=True, label='login', max_length=256)
-    subscription_flag = serializers.BooleanField(required=True, label='subscription_flag')
 
 
 class DeleteRequest(serializers.Serializer):

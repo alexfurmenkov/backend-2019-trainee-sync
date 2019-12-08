@@ -30,7 +30,7 @@ class Node(APIView):
                 login=user_login,
             )
         else:
-            data = {'login': user_login, 'subscription_flag': params['subscription_flag']}
+            data = {'login': user_login}
             requests.post(url=url, headers=headers, data=data)
             returned_data = dict(
                 text='you are subscribed',

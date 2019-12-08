@@ -18,10 +18,9 @@ class Follow(APIView):
         Used to create a subscription on a user
         :return: Response dict
         """
-        user_auth = TokenAuthentication()
-        access = user_auth.get(request)
+        access = TokenAuthentication.get(request)
 
-        subscription_flag = request.data['subscription_flag']
+        subscription_flag = True
         subscriber_email = access['email']
         user_login = request.data['login']
 
