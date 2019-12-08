@@ -14,14 +14,14 @@ class Registration(APIView):
     def post(cls, request) -> Response:
         """
         Registers a new user
-        :return: Response dict
+        :return: Response dict with the new user's data
         """
-        user_query = request.data
-        login = user_query['login']
-        password = hashlib.sha256(user_query['password'].encode('utf-8')).hexdigest()
-        profile_name = user_query['profile_name']
-        email_address = user_query['email_address']
-        email_notifications_mode = user_query['email_notifications_mode']
+        data = request.data
+        login = data['login']
+        password = hashlib.sha256(data['password'].encode('utf-8')).hexdigest()
+        profile_name = data['profile_name']
+        email_address = data['email_address']
+        email_notifications_mode = data['email_notifications_mode']
 
         try:
             existing_user = User.objects.get(login=login)
@@ -31,6 +31,7 @@ class Registration(APIView):
             User.create_user(login, password, profile_name, email_address, email_notifications_mode)
 
         returned_data = dict(
+            message='You are registered!',
             login=login,
             profile_name=profile_name,
             email_address=email_address,
@@ -42,7 +43,6 @@ class Registration(APIView):
     def delete(cls, request) -> Response:
         """
         Deletes existing user
-        :param request:
         :return: Response dict
         """
         user_query = request.data
@@ -50,12 +50,14 @@ class Registration(APIView):
 
         try:
             user_do_delete = User.objects.get(id=user_id)
-            user_do_delete.delete()
-            returned_data = dict(
-                login=user_do_delete.login,
-                profile_name=user_do_delete.profile_name,
-                email_address=user_do_delete.email_address,
-            )
-            return Response(returned_data, status=200)
         except User.DoesNotExist:
             return Response('User is not found.')
+
+        user_do_delete.delete()
+        returned_data = dict(
+            login=user_do_delete.login,
+            profile_name=user_do_delete.profile_name,
+            email_address=user_do_delete.email_address,
+        )
+        return Response(returned_data, status=200)
+

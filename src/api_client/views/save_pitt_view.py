@@ -12,7 +12,6 @@ class SavePitt(APIView):
     def post(cls, request) -> Response:
         """
         Saves a Pitt to the DB
-        :param request:
         :return: Response dict
         """
         data = request.data

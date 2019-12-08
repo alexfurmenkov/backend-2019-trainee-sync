@@ -3,16 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from pitter.acc_actions.auth import TokenAuthentication
-from pitter.models import Pitt, Follower
 from pitter.models.user_model import User
-from pitter.decorators import request_query_serializer
-
-from api_client.validation_serializers.user_serializers import FindRequest
 
 
 class Profile(APIView):
     @classmethod
-    # @request_query_serializer(FindRequest)
     def get(cls, request) -> Response:
         """
         User profile
