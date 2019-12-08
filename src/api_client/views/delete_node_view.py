@@ -17,7 +17,7 @@ class DeleteNode(APIView):
         """
         params = request.query_params
         user_id = params['id']
-        token = params['token'][2:-1]
+        token = params['token']
 
         url = 'http://localhost:8000/registration/'
         headers = {'Authorization': token}
