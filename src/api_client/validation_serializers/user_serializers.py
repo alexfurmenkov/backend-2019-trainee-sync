@@ -27,10 +27,6 @@ class UserPostRequest(serializers.Serializer):
     password = serializers.CharField(required=True, label='Password', max_length=256)
 
 
-class LogoutRequest(serializers.Serializer):
-    pass
-
-
 class FollowPostRequest(serializers.Serializer):
     """
     Folllow serializer

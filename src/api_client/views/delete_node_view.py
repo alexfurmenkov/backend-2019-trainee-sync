@@ -13,7 +13,7 @@ class DeleteNode(APIView):
     def get(cls, request) -> Response:
         """
         Follow node
-        :return: Response with the result of subscription
+        :return: Response with the result of deleting
         """
         params = request.query_params
         user_id = params['id']
@@ -21,9 +21,9 @@ class DeleteNode(APIView):
 
         url = 'http://localhost:8000/registration/'
         headers = {'Authorization': token}
-
         data = {'id': user_id}
         requests.delete(url=url, headers=headers, data=data)
+
         returned_data = dict(
             text='account is deleted',
         )
