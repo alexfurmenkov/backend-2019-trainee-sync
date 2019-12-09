@@ -21,7 +21,11 @@ class MakeDeletePitt(APIView):
         user_auth = TokenAuthentication()
         access = user_auth.get(request)
 
-        user_email = access['email']
+        try:
+            user_email = access['email']
+        except KeyError:
+            return Response('You are logged out.', status=200)
+
         user = User.objects.get(email_address=user_email)
         user_id = user.id
         audio_path = request.data['audio_path']
@@ -45,7 +49,12 @@ class MakeDeletePitt(APIView):
         :param request:
         :return: Response dict
         """
-        TokenAuthentication.get(request)
+        access = TokenAuthentication.get(request)
+
+        try:
+            access['email']
+        except KeyError:
+            return Response('You are logged out.', status=200)
 
         try:
             pitt_id = request.data['id']
