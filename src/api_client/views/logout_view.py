@@ -14,11 +14,10 @@ class Logout(APIView):
         JWT logout
         :return: Response dict
         """
-        access = TokenAuthentication.get(request)
+        TokenAuthentication.get(request)
         auth_token = get_authorization_header(request).split()
 
         access_token = Token.objects.get(access_token=auth_token[0])
         access_token.delete()
 
         return Response('You are logged out.', status=200)
-

@@ -27,7 +27,10 @@ class Login(APIView):
             user = User.objects.get(login=login, password=password)
 
         except User.DoesNotExist:
-            return Response('User is not found.')
+            returned_data = dict(
+                message='User is not found.'
+            )
+            return Response(returned_data, status=200)
 
         payload = {
             'email': user.email_address,
