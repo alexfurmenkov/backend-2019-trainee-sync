@@ -45,8 +45,8 @@ class Registration(APIView):
         Deletes existing user
         :return: Response dict
         """
-        user_query = request.data
-        user_id = user_query['id']
+        data = request.data
+        user_id = data['id']
 
         try:
             user_do_delete = User.objects.get(id=user_id)
