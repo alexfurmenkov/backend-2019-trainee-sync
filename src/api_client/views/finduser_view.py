@@ -34,6 +34,8 @@ class FindUser(APIView):
 
         except User.DoesNotExist:
             return Response('User is not found.', status=200)
+        except KeyError:
+            return Response('Yiu are logged out.', status=200)
 
         for pitt in Pitt.objects.all():
             if pitt.user_id == user.id:
