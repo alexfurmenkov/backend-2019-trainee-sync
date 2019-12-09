@@ -25,7 +25,11 @@ class Feed(APIView):
         feed_pitts = []
         users = []
 
-        follower_email = access['email']
+        try:
+            follower_email = access['email']
+        except KeyError:
+            return Response('You are logged out.', status=200)
+
         follower = User.objects.get(email_address=follower_email)
 
         for foll in Follower.objects.all():

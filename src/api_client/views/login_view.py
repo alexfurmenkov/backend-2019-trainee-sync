@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from pitter.models.user_model import User
+from pitter.models.token_model import Token
 from pitter.acc_actions.keys import private_k
 from pitter.decorators import request_post_serializer
 
@@ -34,9 +35,18 @@ class Login(APIView):
             'exp': 1000000000000,
         }
         token = jwt.encode(payload, private_k, algorithm='RS256')
+
         returned_data = dict(
             token=token,
             email=payload['email'],
             name=payload['name'],
         )
-        return Response(returned_data, status=200)
+
+        try:
+            existing_token = Token.objects.get(access_token=token)
+            if existing_token:
+                return Response(returned_data, status=200)
+
+        except Token.DoesNotExist:
+            Token.create_token(access_token=token)
+            return Response(returned_data, status=200)

@@ -3,6 +3,8 @@ from rest_framework import exceptions
 from rest_framework.authentication import get_authorization_header
 
 import jwt
+
+from pitter.models import Token
 from .keys import public_k
 
 
@@ -13,19 +15,27 @@ class TokenAuthentication(APIView):
     def get(request):
         auth_token = get_authorization_header(request).split()
         if not auth_token:
-            raise exceptions.AuthenticationFailed('Token is not set')
+            raise exceptions.AuthenticationFailed('Token is not set.')
 
         else:
-            if auth_token[0] == b'Bearer':
-                payload = jwt.decode(auth_token[1], public_k, algorithm='RS256')
-            else:
+            try:
+                token_valid = Token.objects.get(access_token=auth_token[0])
+
+            except Token.DoesNotExist:
+                return dict(
+                    message='Token has expired.'
+                )
+
+            if token_valid:
                 payload = jwt.decode(auth_token[0], public_k, algorithm='RS256')
 
-            email = payload['email']
-            name = payload['name']
-            exp = payload['exp']
-            return dict(
-                email=email,
-                name=name,
-                exp=exp,
-            )
+                email = payload['email']
+                name = payload['name']
+                exp = payload['exp']
+                return dict(
+                    email=email,
+                    name=name,
+                    exp=exp,
+                )
+            else:
+                raise exceptions.AuthenticationFailed('You are logged out.')
