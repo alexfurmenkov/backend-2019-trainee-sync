@@ -21,7 +21,10 @@ class Follow(APIView):
         access = TokenAuthentication.get(request)
 
         subscription_flag = True
-        subscriber_email = access['email']
+        try:
+            subscriber_email = access['email']
+        except KeyError:
+            return Response('You are logged out.', status=200)
         user_login = request.data['login']
 
         try:

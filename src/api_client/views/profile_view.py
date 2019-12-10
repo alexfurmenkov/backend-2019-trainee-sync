@@ -16,7 +16,11 @@ class Profile(APIView):
         access = TokenAuthentication.get(request)
         auth_token = get_authorization_header(request)
 
-        user_email = access['email']
+        try:
+            user_email = access['email']
+        except KeyError:
+            return Response('You are logged out.', status=200)
+
         user_profile_name = access['name']
         user = User.objects.get(email_address=user_email, profile_name=user_profile_name)
 

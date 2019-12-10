@@ -12,7 +12,12 @@ class GetUsers(APIView):
         Used to diaplay all users
         :return: Response dict
         """
-        TokenAuthentication.get(request)
+        access = TokenAuthentication.get(request)
+
+        try:
+            access['email']
+        except KeyError:
+            return Response('You are logged out.', status=200)
 
         all_users = User.objects.all()
         users_list = []
