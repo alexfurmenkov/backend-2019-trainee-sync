@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from pitter.acc_actions.auth import TokenAuthentication
+from pitter.models import Pitt
 from pitter.models.user_model import User
 
 
@@ -30,6 +31,12 @@ class Profile(APIView):
         all_users_link = 'http://localhost:8000/users/'
         logout_link = 'http://localhost:8000/logout/'
         delete_link = f'http://localhost:8000/deletenode/?id={user.id}&token={auth_token}'
+        pitts = []
+
+        for pitt in Pitt.objects.all():
+            if pitt.user_id == user.id:
+                pitt_info = (pitt.audio_decoded, pitt.created_at)
+                pitts.append(pitt_info)
 
         returned_data = dict(
             user_data=dict(
@@ -37,6 +44,7 @@ class Profile(APIView):
                 login=user.login,
                 profile_name=user_profile_name,
                 email_address=user_email,
+                pitts=pitts,
             ),
             functions=dict(
                 feed=feed_link,

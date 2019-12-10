@@ -50,7 +50,7 @@ class Feed(APIView):
                 feed_pitts.append(pitt_info)
 
         feed_pitts.reverse()
-        feed = Paginator(feed_pitts, 2)
+        feed = Paginator(feed_pitts, 3)
 
         if 'page' in request.query_params:
             page_number = request.query_params['page']
