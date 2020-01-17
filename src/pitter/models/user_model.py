@@ -1,7 +1,7 @@
 from django.db import models
 from .base import BaseModel
-from .follower import Follower
-from .pitt import Pitt
+from .follower_model import Follower
+from .pitt_model import Pitt
 
 
 class User(BaseModel):
