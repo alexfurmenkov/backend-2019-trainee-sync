@@ -1,5 +1,7 @@
 from django.db import models
 from .base import BaseModel
+from .follower import Follower
+from .pitt import Pitt
 
 
 class User(BaseModel):
@@ -8,6 +10,8 @@ class User(BaseModel):
     profile_name = models.CharField(max_length=32)
     email_address = models.CharField(max_length=128)
     email_notifications_mode = models.BooleanField()
+    followings = models.ManyToManyField(Follower)
+    pitts = models.ManyToManyField(Pitt)
 
     def to_dict(self) -> dict:
         """
